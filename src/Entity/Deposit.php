@@ -7,6 +7,7 @@
 
 namespace App\Entity;
 
+use Gedmo\Mapping\Annotation as Gedmo;
 use Doctrine\ORM\Mapping as ORM;
 use Doctrine\ORM\Query\Expr\Base;
 
@@ -24,7 +25,7 @@ class Deposit extends Base
     private $id;
 
     /**
-     * @ORM\Column(name="amount", type="decimal", precision=4)
+     * @ORM\Column(name="amount", type="decimal", scale=4)
      */
     private $amount;
 
@@ -36,9 +37,10 @@ class Deposit extends Base
     private $accountId;
 
     /**
-     * @ORM\Column(name="available", type="integer")
+     * @Gedmo\Timestampable(on="create")
+     * @ORM\Column(type="datetime")
      */
-    private $available;
+    private $createdAt;
 
     /**
      * @return mixed
@@ -91,16 +93,16 @@ class Deposit extends Base
     /**
      * @return mixed
      */
-    public function getAvailable()
+    public function getCreatedAt()
     {
-        return $this->available;
+        return $this->createdAt;
     }
 
     /**
-     * @param mixed $available
+     * @param mixed $createdAt
      */
-    public function setAvailable($available)
+    public function setCreatedAt($createdAt)
     {
-        $this->available = $available;
+        $this->createdAt = $createdAt;
     }
 }

@@ -1,4 +1,7 @@
 {
+    "behat/transliterator": {
+        "version": "v1.2.0"
+    },
     "cocur/slugify": {
         "version": "v3.2"
     },
@@ -81,14 +84,33 @@
     "doctrine/reflection": {
         "version": "v1.0.0"
     },
+    "gedmo/doctrine-extensions": {
+        "version": "v2.4.37"
+    },
     "jdorn/sql-formatter": {
         "version": "v1.2.17"
+    },
+    "jmose/command-scheduler-bundle": {
+        "version": "2.0",
+        "recipe": {
+            "repo": "github.com/symfony/recipes-contrib",
+            "branch": "master",
+            "version": "2.0",
+            "ref": "a72826cab4a4f55bc1471729d21c93ad6a50ab40"
+        },
+        "files": [
+            "config/packages/scheduler.yaml",
+            "config/routes/scheduler.yaml"
+        ]
     },
     "knplabs/knp-menu": {
         "version": "2.6.0"
     },
     "knplabs/knp-menu-bundle": {
         "version": "v2.3.0"
+    },
+    "mtdowling/cron-expression": {
+        "version": "v1.2.1"
     },
     "nikic/php-parser": {
         "version": "v4.2.4"

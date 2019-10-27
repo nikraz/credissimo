@@ -6,6 +6,7 @@
  */
 namespace App\Entity;
 
+use Gedmo\Mapping\Annotation as Gedmo;
 use Doctrine\ORM\Mapping as ORM;
 use Doctrine\ORM\Query\Expr\Base;
 
@@ -23,7 +24,7 @@ class Account extends Base
     private $id;
 
     /**
-     * @ORM\Column(name="total", type="decimal", precision=4)
+     * @ORM\Column(name="total", type="decimal", scale=4)
      */
     private $total;
 
@@ -33,6 +34,18 @@ class Account extends Base
      * @ORM\JoinColumn(name="client_id", referencedColumnName="id")
      */
     private $clientId;
+
+
+    /**
+     * @ORM\Column(name="available", type="integer")
+     */
+    private $available;
+
+    /**
+     * @Gedmo\Timestampable(on="update")
+     * @ORM\Column(type="datetime")
+     */
+    private $updatedAt;
 
     /**
      * @return mixed
@@ -80,6 +93,38 @@ class Account extends Base
     public function setClientId($clientId)
     {
         $this->clientId = $clientId;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getAvailable()
+    {
+        return $this->available;
+    }
+
+    /**
+     * @param mixed $available
+     */
+    public function setAvailable($available)
+    {
+        $this->available = $available;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getUpdatedAt()
+    {
+        return $this->updatedAt;
+    }
+
+    /**
+     * @param mixed $updatedAt
+     */
+    public function setUpdatedAt($updatedAt)
+    {
+        $this->updatedAt = $updatedAt;
     }
 
 }
