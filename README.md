@@ -13,4 +13,24 @@
 
 UI е прост HTML с input клиент, сметка, сума за депозиране. За репорта - таблица HTML.
 
+
+Clone the project, run docker compose up ; ssh into php container and run : composer install; make database; adjust .env or .env.local for your database.
+DATABASE_URL=mysql://root:root@mysql:3306/sf4
+ run the migrations from withing the php container:  
+      php bin/console doctrine:migrations:migrate             
+
+add some data:
  
+INSERT INTO `client`(`name`) VALUES ("client1")
+INSERT INTO `client`(`name`) VALUES ("client2")
+
+INSERT INTO `account`(`total`, `client_id`,`available`,`updated_at`) VALUES (0,1,1,now());
+INSERT INTO `account`(`total`, `client_id`, `available`,`updated_at`) VALUES (0,2,1,now());
+
+Run custom deposit command: 
+
+ssh into sf4-php container and in project root run : php bin/console Deposit
+
+useful urls:
+ http://localhost/command-scheduler/list
+ http://localhost/deposit
