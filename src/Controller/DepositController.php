@@ -67,24 +67,4 @@ class DepositController extends AbstractController
             ]
         );
     }
-
-    /**
-     * @Route("/report", name="deposit_repost")
-     * @param Request $request
-     *
-     * @return Response
-     */
-    public function report(Request $request)
-    {
-        /** @var Account $acc */
-        $acc = $this->getDoctrine()->getRepository(Account::class)->find($deposit->getAccountId());
-
-        return $this->render(
-            'deposit/create_deposit_report.html.twig',
-            [
-
-
-            ]
-        );
-    }
 }
