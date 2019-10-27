@@ -128,6 +128,7 @@ class DepositCommand extends Command
          file_put_contents(__DIR__ . '/../../public/reports/report_'.date('Y-m-d', time()).'.html', $htmlReport );
 
 
+        $io->comment('Report url: http://localhost/reports/report_'.date('Y-m-d', time()).'.html');
         $io->comment('command executed');
     }
 }
