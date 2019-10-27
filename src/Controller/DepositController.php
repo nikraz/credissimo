@@ -25,7 +25,7 @@ class DepositController extends AbstractController
      *
      * @return Response
      */
-    public function register(Request $request)
+    public function makeDeposit(Request $request)
     {
         $form = $this->createForm(DepositFromType::class);
         $form->handleRequest($request);
@@ -34,12 +34,12 @@ class DepositController extends AbstractController
             $deposit = $form->getData();
 
             /** @var Account $acc */
-            $acc = $this->getDoctrine()->getRepository(Account::class)->find( $deposit->getAccountId());
+            $acc = $this->getDoctrine()->getRepository(Account::class)->find($deposit->getAccountId());
             $total = $acc->getTotal();
             $available = $acc->getAvailable();
-            if($available){
+            if ($available) {
                 //generate current date
-                 $date = new \DateTime();
+                $date = new \DateTime();
                 $date->setTimestamp(time());
 
                 $deposit->setAmount($deposit->getAmount());
@@ -58,9 +58,33 @@ class DepositController extends AbstractController
                 $form->addError(new FormError('Not available for deposit at the moment, please retry later.'));
             }
 
-         }
-        return $this->render('deposit/create_deposit.html.twig', [
-            'registrationForm' => $form->createView(),
-        ]);
+        }
+
+        return $this->render(
+            'deposit/create_deposit.html.twig',
+            [
+                'registrationForm' => $form->createView(),
+            ]
+        );
+    }
+
+    /**
+     * @Route("/report", name="deposit_repost")
+     * @param Request $request
+     *
+     * @return Response
+     */
+    public function report(Request $request)
+    {
+        /** @var Account $acc */
+        $acc = $this->getDoctrine()->getRepository(Account::class)->find($deposit->getAccountId());
+
+        return $this->render(
+            'deposit/create_deposit_report.html.twig',
+            [
+
+
+            ]
+        );
     }
 }
