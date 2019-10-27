@@ -44,7 +44,7 @@ class DepositCommand extends Command
     }
 
     /**
-     * @param InputInterface  $input
+     * @param InputInterface $input
      * @param OutputInterface $output
      *
      * @return int|null|void
@@ -74,7 +74,7 @@ class DepositCommand extends Command
 
         $dailyInterest = 0;
         foreach ($account as $acc) {
-            $interest = ($acc->getTotal() * 0.01)/100;
+            $interest = ($acc->getTotal() * 0.01) / 100;
             $dailyInterest += $interest;
 
             $withInterest = $acc->getTotal() + $interest;
@@ -95,38 +95,46 @@ class DepositCommand extends Command
             ->where('e.createdAt > :n1days')
             ->setParameter('n1days', $date)
             ->getQuery()
-            ->getResult();
+            ->getResult()
+        ;
 
         $summedDeposits = $latestDeposits[0]['sum'];
 
         //Load TWIG and use to render the report
-        $loader = new FilesystemLoader(__DIR__ . '/../../templates/deposit');
+        $loader = new FilesystemLoader(__DIR__.'/../../templates/deposit');
         /** @var ControllerTrait $twig */
         $twig = new Environment($loader);
 
         //HTTP client
-         $client = HttpClient::create();
+        $client = HttpClient::create();
 
-        $response = $client->request('GET', 'http://data.fixer.io/api/latest?access_key=0d52da9f2090212bec148d7cd9d858b1');
+        $response = $client->request(
+            'GET',
+            'http://data.fixer.io/api/latest?access_key=0d52da9f2090212bec148d7cd9d858b1'
+        );
 
         //TODO make client class and handle statuses and responses there and logs
         $statusCode = $response->getStatusCode();
 
         $content = $response->toArray();
 
-        $eurToBgn= $content['rates']['BGN'];
+        $eurToBgn = $content['rates']['BGN'];
         $eurToUsd = $content['rates']['USD'];
-        $bgnToUsd = $eurToUsd/$eurToBgn;
+        $bgnToUsd = $eurToUsd / $eurToBgn;
 
 
         $dailyInterest = $dailyInterest * $bgnToUsd;
         $summedDeposits = $summedDeposits * $bgnToUsd;
 
-        $htmlReport =  $twig->render('create_deposit_report.html.twig', ['interest' => $dailyInterest,
-            'deposit' => $summedDeposits]);
+        $htmlReport = $twig->render(
+            'create_deposit_report.html.twig',
+            [
+                'interest' => $dailyInterest,
+                'deposit' => $summedDeposits,
+            ]
+        );
 
-         file_put_contents(__DIR__ . '/../../public/reports/report_'.date('Y-m-d', time()).'.html', $htmlReport );
-
+        file_put_contents(__DIR__.'/../../public/reports/report_'.date('Y-m-d', time()).'.html', $htmlReport);
 
         $io->comment('Report url: http://localhost/reports/report_'.date('Y-m-d', time()).'.html');
         $io->comment('command executed');
