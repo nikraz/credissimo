@@ -11,7 +11,7 @@ UI е прост HTML с input клиент, сметка, сума за деп�
 
 * Clone the project `git clone https://github.com/nikraz/credissimo.git`
 * Run `docker compose up` ; 
-* Ssh into php container `docker exec -it sf4_php /bin/bash` and run : `composer install`;
+* Ssh into php container `docker exec -it sf4_php /bin/bash` && `cd /home/wwwroot/sf4` && `composer install`;
 * Create database `CREATE DATABASE sf4`
 * Adjust .env or .env.local for your database `DATABASE_URL=mysql://root:root@mysql:3306/sf4`
 * Run the migrations from php container:  `php bin/console doctrine:migrations:migrate`           
