@@ -14,9 +14,12 @@
 UI е прост HTML с input клиент, сметка, сума за депозиране. За репорта - таблица HTML.
 
 
-Clone the project, run docker compose up ; ssh into php container and run : composer install; make database; adjust .env or .env.local for your database.
+Clone the project, run docker compose up ; 
+ssh into php container and run : composer install;
+make database; adjust .env or .env.local for your database.
 DATABASE_URL=mysql://root:root@mysql:3306/sf4
- run the migrations from withing the php container:  
+
+run the migrations from php container:  
       php bin/console doctrine:migrations:migrate             
 
 add some data:
