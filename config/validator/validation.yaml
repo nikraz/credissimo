@@ -1,0 +1,7 @@
+App\Entity\Deposit:
+    properties:
+        amount:
+        -   NotBlank: ~
+        accountId:
+        -   NotBlank: ~
+        -   App\Validator\Constraints\ConstrainsDeposit: ~

@@ -1,17 +1,18 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Make deposit{% endblock %}
 
 {% block body %}
-    <div class="container">
-        <div class="row">
-            <div class="col-sm-12">
-                {{ form_start(registrationForm) }}
-                {{ form_widget(registrationForm) }}
+    <section class="ui container">
 
-                <button class="btn btn-lg btn-primary btn-block" type="submit">
-                    Deposit
-                </button>
-                {{ form_end(registrationForm) }}
-            </div>
-        </div>
-    </div>
+
+            {{ form_start(depositFrom) }}
+            {{ form_widget(depositFrom) }}
+
+            <button class="ui button" type="submit">Deposit</button>
+            {{ form_end(depositFrom) }}
+
+
+    </section>
+
 {% endblock %}
-

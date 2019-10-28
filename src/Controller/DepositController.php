@@ -16,12 +16,15 @@ use Symfony\Component\Form\FormError;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Validator\Validator\ValidatorInterface;
 
 class DepositController extends AbstractController
 {
     /**
      * @Route("/deposit", name="deposit_make")
-     * @param Request $request
+     * @param Request            $request
+     *
+     * @param ValidatorInterface $validator
      *
      * @return Response
      */
@@ -29,41 +32,46 @@ class DepositController extends AbstractController
     {
         $form = $this->createForm(DepositFromType::class);
         $form->handleRequest($request);
+
+        $errors = [];
         if ($form->isSubmitted() && $form->isValid()) {
             /** @var Deposit $deposit */
             $deposit = $form->getData();
 
-            /** @var Account $acc */
-            $acc = $this->getDoctrine()->getRepository(Account::class)->find($deposit->getAccountId());
-            $total = $acc->getTotal();
-            $available = $acc->getAvailable();
-            if ($available) {
-                //generate current date
-                $date = new \DateTime();
-                $date->setTimestamp(time());
+            if (!$errors) {
+                /** @var Account $acc */
+                $acc = $this->getDoctrine()->getRepository(Account::class)->find($deposit->getAccountId());
 
-                $deposit->setAmount($deposit->getAmount());
-                $deposit->setAccountId($deposit->getAccountId());
-                $deposit->setCreatedAt($date);
-                $em = $this->getDoctrine()->getManager();
-                $em->persist($deposit);
-                $em->flush();
+                $total = $acc->getTotal();
 
-                $total = $total + $deposit->getAmount();
-                $acc->setTotal($total);
-                $acc->setUpdatedAt($date);
-                $em->persist($acc);
-                $em->flush();
-            } else {
-                $form->addError(new FormError('Not available for deposit at the moment, please retry later.'));
+                $available = $acc->getAvailable();
+                if ($available) {
+                    //generate current date
+                    $date = new \DateTime();
+                    $date->setTimestamp(time());
+
+                    $deposit->setAmount($deposit->getAmount());
+                    $deposit->setAccountId($deposit->getAccountId());
+                    $deposit->setCreatedAt($date);
+                    $em = $this->getDoctrine()->getManager();
+                    $em->persist($deposit);
+                    $em->flush();
+
+                    $total = $total + $deposit->getAmount();
+                    $acc->setTotal($total);
+                    $acc->setUpdatedAt($date);
+                    $em->persist($acc);
+                    $em->flush();
+                } else {
+                    $form->addError(new FormError('Not available for deposit at the moment, please retry later.'));
+                }
             }
 
         }
-
-        return $this->render(
+         return $this->render(
             'deposit/create_deposit.html.twig',
             [
-                'registrationForm' => $form->createView(),
+                'depositFrom' => $form->createView(),
             ]
         );
     }
