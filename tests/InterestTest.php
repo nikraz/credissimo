@@ -13,5 +13,6 @@ class InterestTest extends TestCase
         $result = $calculator->calculateInterest(10000);
 
         // assert that your calculator added the numbers correctly!
-        $this->assertEquals(1, $result);    }
+        $this->assertEquals(1, $result);
+    }
 }
