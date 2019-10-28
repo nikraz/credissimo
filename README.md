@@ -12,9 +12,9 @@ UI е прост HTML с input клиент, сметка, сума за деп�
 * Clone the project `git clone https://github.com/nikraz/credissimo.git`
 * Run `docker compose up` ; 
 * Ssh into php container `docker exec -it sf4_php /bin/bash` && `cd /home/wwwroot/sf4` && `composer install`;
-* Create database `CREATE DATABASE sf4`
-* Adjust .env or .env.local for your database `DATABASE_URL=mysql://root:root@mysql:3306/sf4`
-* Run the migrations from php container:  `php bin/console doctrine:migrations:migrate`           
+* Create database `CREATE DATABASE sf4` if not yet created
+* Adjust/Check .env or .env.local for your database `DATABASE_URL=mysql://root:root@mysql:3306/sf4`
+* Run the migrations `docker exec -it sf4_php /bin/bash` && `cd /home/wwwroot/sf4` && `php bin/console doctrine:migrations:migrate`           
 
 * Add some data:
 ```
@@ -32,6 +32,8 @@ OR run the fixtures
 
 * Run custom calculate and add interest command: 
 `docker exec -it sf4_php /bin/bash` && `cd /home/wwwroot/sf4` && `php bin/console Deposit`
+* To view generated reports `ctrl + click` link in console -
+Report url:  [Link](http://localhost/reports/report_2019-10-29.html)
 * Run tests
 `docker exec -it sf4_php /bin/bash` && `cd /home/wwwroot/sf4` && `./bin/phpunit`
 * Useful project urls:
