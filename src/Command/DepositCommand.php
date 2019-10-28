@@ -4,6 +4,7 @@ namespace App\Command;
 
 use App\Entity\Account;
 use App\Entity\Deposit;
+use App\Util\InterestCalculator;
 use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\ORMException;
 use Symfony\Bundle\FrameworkBundle\Controller\ControllerTrait;
@@ -73,8 +74,11 @@ class DepositCommand extends Command
         $date = date('Y-m-d h:i:s', strtotime("-1 days"));
 
         $dailyInterest = 0;
+        $interestCalculator = new InterestCalculator();
+
         foreach ($account as $acc) {
-            $interest = ($acc->getTotal() * 0.01) / 100;
+
+            $interest = $interestCalculator->calculateInterest($acc->getTotal());
             $dailyInterest += $interest;
 
             $withInterest = $acc->getTotal() + $interest;

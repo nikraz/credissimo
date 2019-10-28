@@ -33,15 +33,12 @@ class DepositController extends AbstractController
         $form = $this->createForm(DepositFromType::class);
         $form->handleRequest($request);
 
-        $errors = [];
         if ($form->isSubmitted() && $form->isValid()) {
             /** @var Deposit $deposit */
             $deposit = $form->getData();
 
-            if (!$errors) {
                 /** @var Account $acc */
                 $acc = $this->getDoctrine()->getRepository(Account::class)->find($deposit->getAccountId());
-
                 $total = $acc->getTotal();
 
                 $available = $acc->getAvailable();
@@ -65,8 +62,6 @@ class DepositController extends AbstractController
                 } else {
                     $form->addError(new FormError('Not available for deposit at the moment, please retry later.'));
                 }
-            }
-
         }
          return $this->render(
             'deposit/create_deposit.html.twig',
